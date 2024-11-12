@@ -50,6 +50,8 @@ export async function GET(request: Request) {
     try {
 
         await connect();
+        console.log("get");
+
         const recipes = await Recipe.find();
         if (recipes)
             return NextResponse.json(recipes, { status: 200 });
@@ -62,41 +64,41 @@ export async function GET(request: Request) {
 };
 
 
-export async function PUT(request: Request) {
-    try {
+// export async function PUT(request: Request) {
+//     try {
 
-        const url = new URL(request.url);
-        const id = url.searchParams.get('id');
+//         const url = new URL(request.url);
+//         const id = url.searchParams.get('id');
 
-        const {mealName, category, PreparationInstructions, ingredients, isFavorite, image} = await request.json();
+//         const {mealName, category, PreparationInstructions, ingredients, isFavorite, image} = await request.json();
 
 
-        await connect();
+//         await connect();
 
-        const updatedRecipe = await Recipe.findByIdAndUpdate(
-            id,
-            { $set: {mealName, category, PreparationInstructions, ingredients, isFavorite, image} },
-            { new: true }
-        );
+//         const updatedRecipe = await Recipe.findByIdAndUpdate(
+//             id,
+//             { $set: {mealName, category, PreparationInstructions, ingredients, isFavorite, image} },
+//             { new: true }
+//         );
 
-        return NextResponse.json({ updatedTodo: updatedRecipe }, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    }
+//         return NextResponse.json({ updatedTodo: updatedRecipe }, { status: 200 });
+//     } catch (error) {
+//         return NextResponse.json({ error: error }, { status: 500 });
+//     }
 
-};
+// };
 
-export async function DELETE(request: Request) {
-    try {
-        const url = new URL(request.url);
-        const id = url.searchParams.get('id');
+// export async function DELETE(request: Request) {
+//     try {
+//         const url = new URL(request.url);
+//         const id = url.searchParams.get('id');
 
-        await connect();
+//         await connect();
 
-        await Recipe.findByIdAndDelete(id);
-        return NextResponse.json({ massage: `object deleted` }, { status: 200 });
-    }
-    catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 });
-    }
-};
+//         await Recipe.findByIdAndDelete(id);
+//         return NextResponse.json({ massage: `object deleted` }, { status: 200 });
+//     }
+//     catch (error) {
+//         return NextResponse.json({ error: error }, { status: 500 });
+//     }
+// };
