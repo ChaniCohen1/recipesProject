@@ -1,12 +1,53 @@
 "use client"
 import React, { useState } from 'react'
+import { z } from 'zod';
+import { addRecipe } from '@/app/services/getRecipes'
+import { useRouter } from "next/navigation";
+
+const imagePathSchema = z.string().refine((path) => {
+    return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(path);  // Check if the path ends with a valid image extension
+}, {
+    message: "File must be an image (JPEG, PNG, etc.)",
+});
+
+const recipeSchema = z.object({
+    mealName: z.string().min(1, { message: "Meal name is required" }),
+    category: z.string().min(1, { message: "Category is required" }),
+    PreparationInstructions: z.string().min(1, { message: "Preparation instructions are required" }),
+    ingredients: z.array(z.string()).min(1, { message: "At least one ingredient is required" }),
+    isFavorite: z.boolean(),
+    image: imagePathSchema,
+});
+
+type RecipeData = z.infer<typeof recipeSchema>;
+
+const validate = (recipeData: RecipeData) => {
+    try {
+        const validRecipeData = recipeSchema.parse(recipeData);
+        console.log("inputs are valid");
+        return validRecipeData;
+    }
+    catch (error) {
+        if (error instanceof z.ZodError) {
+            console.error("validation error: ", error.errors);
+        }
+        return null;
+    }
+};
 
 const NewCardForm = () => {
+    const router = useRouter();
+
     const [mealName, setMealName] = useState('');
     const [category, setCategory] = useState('');
     const [image, setImage] = useState('');
     const [ingredients, setIngredients] = useState<string[]>(['']);
     const [instructions, setInstructions] = useState('');
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    const goBack = () => {
+        router.push("/pages/cards");
+    };
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setCategory(event.target.value);
@@ -24,9 +65,38 @@ const NewCardForm = () => {
         setIngredients([...ingredients, '']);
     };
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsFavorite(event.target.checked);  // Update state based on checkbox
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const filePath = `../data/${e.target.files[0].name}`; // Example path construction
+            setImage(filePath);
+        }
+    };
+
+    const handleSubmit = async (event: React.FormEvent) => {
         //varify with the zod schema, send to the POST func
         event.preventDefault();
+
+        const dataToValidate = {
+            mealName,
+            category,
+            PreparationInstructions: instructions,
+            ingredients,
+            isFavorite,
+            image,
+        };
+        const validatedData = validate(dataToValidate);
+        if (validatedData) {
+            try {
+                const response = await addRecipe(validatedData); // Call the POST function
+                console.log("Recipe successfully submitted:", response);
+            } catch (error) {
+                console.error("Error submitting recipe:", error);
+            }
+        }
     };
 
     const inpStyle = "m-2 border-gray-300 border-2 rounded";
@@ -34,8 +104,8 @@ const NewCardForm = () => {
 
     return (
         <div>
-            <button>Back</button>
-            <h1>Add Recipe</h1>
+            <button onClick={goBack}>Back</button>
+            <h1 className="text-3xl">Add Recipe</h1>
             <form onSubmit={handleSubmit} className="flex flex-row">
                 <div className="flex flex-col w-1/3">
                     <input
@@ -58,8 +128,7 @@ const NewCardForm = () => {
                     <input
                         type="file"
                         name="image"
-                        placeholder="Image URL"
-                        onChange={(e) => setImage(e.target.value)}
+                        onChange={handleImageChange}
                         className={inpStyle}
                     />
 
@@ -94,6 +163,15 @@ const NewCardForm = () => {
                         onChange={(e) => setInstructions(e.target.value)}
                         className={`${inpStyle} w-full`}
                     />
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="addToFavorite"
+                            checked={isFavorite} // Bind checkbox to state
+                            onChange={handleCheckboxChange} // Handle state change
+                        />
+                        add to favorites
+                    </label>
                     <button type="submit" className={`${buttonStyle} w-1/5`}>Add</button>
                 </div>
             </form>
