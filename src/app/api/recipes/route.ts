@@ -2,7 +2,6 @@ import connect from "@/app/lib/DB/connectDB";
 import Recipe from "@/app/lib/models/recipe";
 import { NextResponse } from "next/server";
 
-
 export async function POST(request: Request) {
     try {
 
@@ -50,9 +49,9 @@ export async function GET(request: Request) {
     try {
 
         await connect();
-        console.log("get");
-
         const recipes = await Recipe.find();
+        console.log("recipes",recipes);
+        
         if (recipes)
             return NextResponse.json(recipes, { status: 200 });
         else
