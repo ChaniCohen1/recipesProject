@@ -5,12 +5,6 @@ import { addRecipe } from '@/app/services/getRecipes'
 import { useRouter } from "next/navigation";
 import Recipe from "@/app/types/recipes";
 
-const imagePathSchema = z.string().refine((path) => {
-    return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(path);  // Check if the path ends with a valid image extension
-}, {
-    message: "File must be an image (JPEG, PNG, etc.)",
-});
-
 const recipeSchema = z.object({
     _id: z.string(),
     mealName: z.string().min(1, { message: "Meal name is required" }),
@@ -18,7 +12,7 @@ const recipeSchema = z.object({
     PreparationInstructions: z.string().min(1, { message: "Preparation instructions are required" }),
     ingredients: z.array(z.string()).min(1, { message: "At least one ingredient is required" }),
     isFavorite: z.boolean(),
-    image: imagePathSchema,
+    image: z.string(),
 });
 
 type RecipeDataZod = z.infer<typeof recipeSchema>;
@@ -69,13 +63,6 @@ const NewCardForm = () => {
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setIsFavorite(event.target.checked);  // Update state based on checkbox
-    };
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const filePath = `../data/${e.target.files[0].name}`; // Example path construction
-            setImage(filePath);
-        }
     };
 
     const handleSubmit = async (event: React.FormEvent) => {
@@ -129,10 +116,10 @@ const NewCardForm = () => {
                         <option value="other">Other</option>
                     </select>
                     <input
-                        type="file"
+                        type="text"
                         name="image"
-                        accept="image/*"
-                        onChange={handleImageChange}
+                        placeholder="image URL"
+                        onChange={(e) => setImage(e.target.value)}
                         className={inpStyle}
                     />
 
