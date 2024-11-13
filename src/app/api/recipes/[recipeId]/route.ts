@@ -3,11 +3,9 @@ import Recipe from "@/app/lib/models/recipe";
 import { NextResponse } from "next/server";
 
 
-export async function GET(request: Request, {params} : {params:{recipeId: string}}){
+export async function GET(request: Request, {params} : {params:{recipeId: string}}){    
     try{
-        const { recipeId } = await params;
-        console.log(recipeId, "getbyid");
-        
+        const { recipeId } = await params;        
         await connect();
         const recipe = await Recipe.findById(recipeId)
         return NextResponse.json({recipe: recipe}, {status: 200});

@@ -12,9 +12,10 @@ export const addRecipe = async (newRecipe: Recipe) => {
     }
 };
 
-export const getRecipes = async () => {
+export const getRecipes = async () => {    
     try{
-        const response = await axios.get('https://recipes-project-omega.vercel.app/api/recipes');
+        const response = await axios.get('http://localhost:3000/api/recipes');
+        
         return response.data;
     }catch(error){
         console.error('Error get recipes:', error);
@@ -34,7 +35,7 @@ export const getRecipeById = async (id: string) => {
 
 export const editRecipe = async (id: string, editRecipe: Recipe) => {
     try{
-        const response = await axios.put(`https://recipes-project-omega.vercel.app/api/recipes/${id}`, editRecipe);
+        const response = await axios.put(`http://localhost:3000/api/recipes/${id}`, editRecipe);
         return response.data;
     }catch(error){
         console.error('error edit recipe', error);
