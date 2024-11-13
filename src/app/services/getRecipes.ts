@@ -4,7 +4,7 @@ import Recipe from "../types/recipes";
 
 export const addRecipe = async (newRecipe: Recipe) => {
     try{
-        const response = await axios.post('http://localhost:3000/api/recipes', newRecipe);
+        const response = await axios.post('http://recipes-project-omega.vercel.app/api/recipes', newRecipe);
         return response.data;
     }catch(error){
         console.error('Error adding recipe:', error);
