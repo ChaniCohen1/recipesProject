@@ -1,10 +1,8 @@
-import Card from '@/app/components/Card'
-import React from 'react'
+import CardList from "@/app/components/CardList";
+import React from "react";
 
 const page = () => {
-  return (
-    <Card/>
-  )
-}
+  return <CardList />;
+};
 
-export default page
+export default page;
