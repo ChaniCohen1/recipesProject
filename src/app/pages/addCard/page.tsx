@@ -128,6 +128,7 @@ const NewCardForm = () => {
                     <input
                         type="file"
                         name="image"
+                        accept="image/*"
                         onChange={handleImageChange}
                         className={inpStyle}
                     />
