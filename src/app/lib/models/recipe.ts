@@ -1,5 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
-import Recipe from "@/app/types/recipes";
+import type Recipe from "@/app/types/recipes";
 
 const recipeSchema: Schema<Recipe> = new Schema({
   mealName: { type: String, required: true },
