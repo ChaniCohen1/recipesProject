@@ -1,7 +1,7 @@
 import axios from "axios";
 import Recipe from "../types/recipes";
 
-const url = "http://recipes-project-omega.vercel.app";
+const url = "https://recipes-project-omega.vercel.app";
 
 export const addRecipe = async (newRecipe: Recipe) => {
     try{
