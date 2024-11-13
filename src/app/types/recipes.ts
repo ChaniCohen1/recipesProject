@@ -2,7 +2,6 @@ import Document from "mongoose";
 
 // export default 
 export default interface Recipe extends Document {
-  Recipe:any;
   _id:string;
   mealName: string;
   category: string;
