@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/app/components/Header";
-import {Recipe} from "@/app/types/recipes";
+import Recipe from "@/app/types/recipes";
 import React, { useState } from "react";
 
 const Page: React.FC = () => {

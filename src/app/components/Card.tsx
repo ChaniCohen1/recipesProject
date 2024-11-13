@@ -42,7 +42,7 @@ const Card: React.FC<CardProps> = ({ recipe, isSelected }) => {
           <h6 className="mb-2 text-slate-800 text-xl font-semibold">
             {recipe.mealName}
           </h6>
-          <Star selected={isFavorite} onClick={handleStarClick} />
+          <Star selected={isFavorite} onClick={handleStarClick}/>
         </div>
         <h1 className="mb-2 text-slate-800 text-xl font-semibold">
           {recipe.category}
@@ -51,7 +51,7 @@ const Card: React.FC<CardProps> = ({ recipe, isSelected }) => {
           {recipe.PreparationInstructions.slice(0, 100)}
         </p>
       </div>
-      <div className="mt-auto px-4 pb-4 pt-0 mt-2">
+      <div className="mt-auto px-4 pb-4 pt-0">
         {!isSelected && (
           <button
             onClick={() => setIsExpanded(true)}

@@ -1,5 +1,5 @@
 "use client";
-import { Recipe } from "@/app/types/recipes";
+import Recipe from "@/app/types/recipes";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getRecipes } from "@/app/services/getRecipes";
@@ -35,13 +35,25 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
   }, []);
 
   useEffect(() => {
+    console.log(searchQuery);
+
+    // const filteredRecipes = recipes
+    //   .filter((recipe) => {
+    //     const matchesCategory =
+    //       selectedCategory === "other" || recipe.category === selectedCategory;
+    //     const matchesSearch = recipe.mealName
+    //       .toLowerCase()
+    //       .includes(searchQuery.toLowerCase());
+
+    //     return matchesCategory && matchesSearch;
+    //   })
     const filteredRecipes = recipes
       .filter((recipe) => {
         const matchesCategory =
-          selectedCategory === "" || recipe.category === selectedCategory;
-        const matchesSearch = recipe.mealName
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
+          selectedCategory === "other" || recipe.category === selectedCategory;
+        const matchesSearch =
+          searchQuery === "" ||
+          recipe.mealName.toLowerCase().includes(searchQuery.toLowerCase());
 
         return matchesCategory && matchesSearch;
       })
@@ -107,7 +119,7 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
       <div className="flex w-[264px] mt-auto space-x-6 border-b-2 border-b-black">
         <button
           onClick={() => {
-            setIsFavoriteChosen(!isFavoriteChosen );
+            setIsFavoriteChosen(false);
             setFiltered(recipes);
           }}
           className={allRecipesButtonClass}
@@ -116,7 +128,8 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
         </button>
         <button
           onClick={() => {
-            setIsFavoriteChosen(!isFavoriteChosen);
+            setIsFavoriteChosen(true);
+            console.log(recipes);
             setFiltered(recipes.filter((rec) => rec.isFavorite === true));
           }}
           className={favoritesButtonClass}
@@ -124,8 +137,13 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
           Favorites
         </button>
       </div>
+      <ul>
+        {recipes.map((rec) => {
+          console.log(rec._id,rec.isFavorite);
+          return <li key={rec._id}>{rec.isFavorite}</li>;
+        })}
+      </ul>
     </div>
-
   );
 };
 
