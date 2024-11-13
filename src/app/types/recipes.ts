@@ -1,6 +1,5 @@
 import Document from "mongoose";
 
-// export default 
 export default interface Recipe extends Document {
   _id:string;
   mealName: string;
@@ -11,13 +10,3 @@ export default interface Recipe extends Document {
   image: string;
 }
 
-// interface RecipeData {
-//   mealName: string;
-//   category: string;
-//   PreparationInstructions: string;
-//   ingredients: string[];
-//   isFavorite: boolean;
-//   image: string;
-// }
-
-// export type { Recipe, RecipeData };

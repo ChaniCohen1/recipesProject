@@ -3,6 +3,7 @@ import Recipe from "@/app/types/recipes";
 import ReadMore from "./ReadMore";
 import Star from "./Star";
 import { editRecipe } from "@/app/services/getRecipes";
+import Image from "next/image";
 
 interface CardProps {
   recipe: Recipe;
@@ -28,7 +29,7 @@ const Card: React.FC<CardProps> = ({ recipe, isSelected }) => {
   return (
     <div className="group flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-80">
       <div className="h-56 m-2.5 overflow-hidden text-white rounded-md">
-        <img
+        <Image
           width={320}
           height={224}
           className="w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.25, 1, 0.5, 1)] transform group-hover:scale-110"
