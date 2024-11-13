@@ -83,6 +83,7 @@ const NewCardForm = () => {
             try {
                 const response = await addRecipe(validatedData); // Call the POST function
                 console.log("Recipe successfully submitted:", response);
+                goBack(); //go back to all recipes if successfull
             } catch (error) {
                 console.error("Error submitting recipe:", error);
             }
