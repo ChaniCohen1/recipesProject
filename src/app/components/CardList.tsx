@@ -1,27 +1,28 @@
 "use client";
 import Card from "@/app/components/Card";
 import React, { useEffect, useState } from "react";
-import { RecipeData } from "@/app/types/recipes";
+import Recipe from "@/app/types/recipes";
+import { getRecipes } from "@/app/services/getRecipes";
 
 const CardList = () => {
-  const [recipes, setRecipes] = useState<RecipeData[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
-    const newRecipe: RecipeData = {
-      mealName: "mealName",
-      category: "category",
-      PreparationInstructions: "PreparationInstructions",
-      ingredients: ["ingredients1", "ingredients2"],
-      isFavorite: true,
-      image: "https://cdn.loveandlemons.com/wp-content/uploads/2024/07/ratatouille.jpg",
+    const fetchRecipes = async () => {
+      try {
+        const data = await getRecipes();
+        setRecipes(data);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
     };
-    setRecipes([...recipes, newRecipe]);
+    fetchRecipes();
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-wrap justify-center gap-4">
       {recipes.map((recipe, index) => (
-        <Card key={index} recipe={recipe} />
+        <Card key={index} recipe={recipe} isSelected={false}/>
       ))}
     </div>
   );

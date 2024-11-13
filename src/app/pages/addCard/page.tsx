@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { z } from 'zod';
 import { addRecipe } from '@/app/services/getRecipes'
 import { useRouter } from "next/navigation";
+import Recipe from "@/app/types/recipes";
 
 const imagePathSchema = z.string().refine((path) => {
     return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(path);  // Check if the path ends with a valid image extension
@@ -11,6 +12,7 @@ const imagePathSchema = z.string().refine((path) => {
 });
 
 const recipeSchema = z.object({
+    _id: z.string(),
     mealName: z.string().min(1, { message: "Meal name is required" }),
     category: z.string().min(1, { message: "Category is required" }),
     PreparationInstructions: z.string().min(1, { message: "Preparation instructions are required" }),
@@ -19,9 +21,9 @@ const recipeSchema = z.object({
     image: imagePathSchema,
 });
 
-type RecipeData = z.infer<typeof recipeSchema>;
+type RecipeDataZod = z.infer<typeof recipeSchema>;
 
-const validate = (recipeData: RecipeData) => {
+const validate = (recipeData: RecipeDataZod) => {
     try {
         const validRecipeData = recipeSchema.parse(recipeData);
         console.log("inputs are valid");
@@ -80,7 +82,8 @@ const NewCardForm = () => {
         //varify with the zod schema, send to the POST func
         event.preventDefault();
 
-        const dataToValidate = {
+        const dataToValidate: Recipe = {
+            _id: "",
             mealName,
             category,
             PreparationInstructions: instructions,
