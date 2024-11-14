@@ -8,18 +8,30 @@ import Image from "next/image";
 interface CardProps {
   recipe: Recipe;
   isSelected: boolean;
+  onClick: (recipe: Recipe) => void;
+  setUpdate: (b: boolean) => void;
 }
 
-const Card: React.FC<CardProps> = ({ recipe, isSelected }) => {
-  const [isFavorite, setIsFavorite] = useState(recipe.isFavorite);
+const Card: React.FC<CardProps> = ({
+  recipe,
+  isSelected,
+  onClick,
+  setUpdate,
+}) => {
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleStarClick = async () => {
-    console.log("handleStarClick");
-    const updatedRecipe: Recipe = { ...recipe, isFavorite: !isFavorite };
-    setIsFavorite(!isFavorite);
+    console.log("aaa", recipe);
     try {
+      const updatedRecipe: Recipe = {
+        ...recipe,
+        isFavorite: !recipe.isFavorite,
+      };
       const data = await editRecipe(recipe._id, updatedRecipe);
+      console.log("data", data);
+      onClick(data.updatedTodo);
+      setUpdate(true);
       console.log("Recipe updated successfully:", data);
     } catch (error) {
       console.error("Error updating recipe:", error);
@@ -43,7 +55,8 @@ const Card: React.FC<CardProps> = ({ recipe, isSelected }) => {
           <h6 className="mb-2 text-slate-800 text-xl font-semibold">
             {recipe.mealName}
           </h6>
-          <Star selected={isFavorite} onClick={handleStarClick}/>
+
+          <Star selected={recipe.isFavorite} onClick={handleStarClick} />
         </div>
         <h1 className="mb-2 text-slate-800 text-xl font-semibold">
           {recipe.category}
@@ -68,8 +81,8 @@ const Card: React.FC<CardProps> = ({ recipe, isSelected }) => {
           recipe={recipe}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
-          setIsFavorite={setIsFavorite}
-          isFavorite={isFavorite}
+          // setIsFavorite={setIsFavorite}
+          isFavorite={recipe.isFavorite}
           handleStarClick={handleStarClick}
         />
       )}

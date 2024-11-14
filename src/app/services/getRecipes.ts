@@ -35,6 +35,8 @@ export const getRecipeById = async (id: string) => {
 };
 
 export const editRecipe = async (id: string, editRecipe: Recipe) => {
+    console.log("editRecipe", editRecipe);
+    
     try{
         const response = await axios.put(`${url}/api/recipes/${id}`, editRecipe);
         return response.data;

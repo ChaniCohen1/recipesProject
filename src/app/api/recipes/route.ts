@@ -50,7 +50,6 @@ export async function GET(request: Request) {
 
         await connect();
         const recipes = await Recipe.find();
-        console.log("recipes",recipes);
         
         if (recipes)
             return NextResponse.json(recipes, { status: 200 });

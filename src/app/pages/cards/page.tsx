@@ -7,25 +7,36 @@ import React, { useEffect, useState } from "react";
 
 const Page = () => {
   const [filtered, setFiltered] = useState<Recipe[]>([]);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const data = await getRecipes();
-        setFiltered(data);
+        const data: Recipe[] = await getRecipes();
+        status === "all"
+          ? setFiltered(data)
+          : setFiltered(data.filter((rec) => rec.isFavorite === true));
+          setUpdate(false)
       } catch (error) {
         console.error("Error fetching books:", error);
       }
     };
     fetchRecipes();
-    console.log("filtered",filtered);
-    
-  }, []);
+  }, [update]);
+
   return (
-    <div className="">
-      <Header setFiltered={setFiltered}/>
-      <CardList filtered={filtered} />
-    </div>
+    <>
+      <Header
+        setFiltered={setFiltered}
+        update={update}
+        setUpdate={setUpdate}
+      />
+      <CardList
+        filtered={filtered}
+        setFiltered={setFiltered}
+        setUpdate={setUpdate}
+      />
+    </>
   );
 };
 

@@ -10,6 +10,7 @@ interface StarProps {
 }
 
 const Star: React.FC<StarProps> = ({ selected, onClick }) => {
+  
   return (
     <>
       {selected ? (
