@@ -19,10 +19,13 @@ interface HeaderProps {
   update: boolean;
   setUpdate: (b: boolean) => void;
 }
-
-const status = localStorage.getItem("cardsStatusFavorite");
+let status;
+if (typeof window !== "undefined") {
+  status = localStorage.getItem("cardsStatusFavorite");
+} else {
+  status = false;
+}
 const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
-
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<Recipe[]>([]);
