@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import Recipe from "@/app/types/recipes";
 import ReadMore from "./ReadMore";
