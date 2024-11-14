@@ -1,7 +1,7 @@
 import axios from "axios";
 import Recipe from "../types/recipes";
 
-const url = "https://recipes-project-omega.vercel.app";
+const url = "http://localhost:3000";
 
 export const addRecipe = async (newRecipe: Recipe) => {
     try{
@@ -48,7 +48,7 @@ export const editRecipe = async (id: string, editRecipe: Recipe) => {
 
 export const deleteRecipe = async (id: string) => {
     try{
-        const response = await axios.delete(`${url}/api/recipes/${id}`);
+        const response = await axios.delete(`https://recipes-project-omega.vercel.app/api/recipes/${id}`);
         return response.data;
     }catch(error){
         console.error('error edit recipe', error);

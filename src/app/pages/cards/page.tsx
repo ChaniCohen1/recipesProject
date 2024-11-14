@@ -8,10 +8,10 @@ import React, { useEffect, useState } from "react";
 const Page = () => {
   const [filtered, setFiltered] = useState<Recipe[]>([]);
   const [update, setUpdate] = useState(false);
-  const status = localStorage.getItem("cardsStatusFavorite");
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
+        const status = localStorage.getItem("cardsStatusFavorite");
         const data: Recipe[] = await getRecipes();
         status === "all"
           ? setFiltered(data)

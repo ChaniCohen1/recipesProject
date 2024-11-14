@@ -20,8 +20,8 @@ interface HeaderProps {
   setUpdate: (b: boolean) => void;
 }
 
+const status = localStorage.getItem("cardsStatusFavorite");
 const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
-  const status = localStorage.getItem("cardsStatusFavorite");
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
       setUpdate(false);
     };
     getAllRecipes();
-  }, [update]);
+  }, [setUpdate, update]);
 
   useEffect(() => {
     setSearchQuery("");
@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
       .sort((a, b) => a.mealName.localeCompare(b.mealName));
 
     setFiltered(filteredRecipes);
-  }, [recipes, selectedCategory, searchQuery, setFiltered]);
+  }, [recipes, selectedCategory, searchQuery, setFiltered, isFavoriteChosen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
