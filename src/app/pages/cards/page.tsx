@@ -6,17 +6,18 @@ import Recipe from "@/app/types/recipes";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  let status;
-  if (typeof window !== "undefined") {
-    status = localStorage.getItem("cardsStatusFavorite");
-  } else {
-    status = false;
-  }
+  // let status;
+  // if (typeof window !== "undefined") {
+  //   status = localStorage.getItem("cardsStatusFavorite");
+  // } else {
+  //   status = false;
+  // }
   const [filtered, setFiltered] = useState<Recipe[]>([]);
   const [update, setUpdate] = useState(false);
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
+        const status = localStorage.getItem("cardsStatusFavorite");
         const data: Recipe[] = await getRecipes();
         status === "all"
           ? setFiltered(data)
