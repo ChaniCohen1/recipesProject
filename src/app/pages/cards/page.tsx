@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 const Page = () => {
   const [filtered, setFiltered] = useState<Recipe[]>([]);
   const [update, setUpdate] = useState(false);
-
+  const status = localStorage.getItem("cardsStatusFavorite");
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -16,7 +16,7 @@ const Page = () => {
         status === "all"
           ? setFiltered(data)
           : setFiltered(data.filter((rec) => rec.isFavorite === true));
-          setUpdate(false)
+        setUpdate(false);
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -26,11 +26,7 @@ const Page = () => {
 
   return (
     <>
-      <Header
-        setFiltered={setFiltered}
-        update={update}
-        setUpdate={setUpdate}
-      />
+      <Header setFiltered={setFiltered} update={update} setUpdate={setUpdate} />
       <CardList
         filtered={filtered}
         setFiltered={setFiltered}

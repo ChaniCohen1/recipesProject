@@ -9,7 +9,11 @@ interface CardListProps {
   setUpdate: (b: boolean) => void;
 }
 
-const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) => {
+const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) => {  
+  const [currentPage, setCurrentPage] = useState(1);
+  const recipesPerPage = 5;
+  const totalPages = Math.ceil(filtered.length / recipesPerPage);
+
   const onChangeData = (updatedRecipe: Recipe) => {
     setFiltered(
       filtered.map((recipe) =>
@@ -17,10 +21,6 @@ const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) 
       )
     );
   };
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const recipesPerPage = 2;
-  const totalPages = Math.ceil(filtered.length / recipesPerPage);
 
   // חישוב המתכונים שצריכים להופיע בעמוד הנוכחי
   const indexOfLastRecipe = currentPage * recipesPerPage;
@@ -42,8 +42,9 @@ const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) 
   };
 
   return (
+    <>
     <div className="flex flex-wrap justify-center gap-4">
-      {filtered.map((recipe, index) => (
+      {currentRecipes.map((recipe, index) => (
         <Card
           key={index}
           recipe={recipe}
@@ -52,7 +53,7 @@ const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) 
           setUpdate={setUpdate}
         />
       ))}
-     
+     </div>
       <div className="flex justify-center items-center gap-4 mt-4 mb-6">
         <span className="text-sm text-gray-500">
           Page {currentPage}-{totalPages} of {totalPages}
@@ -73,7 +74,7 @@ const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) 
           {">"}
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
