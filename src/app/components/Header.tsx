@@ -16,41 +16,45 @@ const SelectArray = [
 
 interface HeaderProps {
   setFiltered: (id: Recipe[]) => void;
+  update: boolean;
+  setUpdate: (b: boolean) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
+const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
+  const status = localStorage.getItem("cardsStatusFavorite");
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
-  const [isFavoriteChosen, setIsFavoriteChosen] = useState(false);
+  const [isFavoriteChosen, setIsFavoriteChosen] = useState(
+    status === "all" ? false : true
+  );
   const router = useRouter();
 
   useEffect(() => {
     const getAllRecipes = async () => {
       const allRecipes: Recipe[] = await getRecipes();
       setRecipes(allRecipes);
+      setUpdate(false);
     };
     getAllRecipes();
-  }, []);
+  }, [update]);
 
   useEffect(() => {
-    console.log(searchQuery);
+    setSearchQuery("");
+    setSelectedCategory("");
+  }, [isFavoriteChosen]);
 
-    // const filteredRecipes = recipes
-    //   .filter((recipe) => {
-    //     const matchesCategory =
-    //       selectedCategory === "other" || recipe.category === selectedCategory;
-    //     const matchesSearch = recipe.mealName
-    //       .toLowerCase()
-    //       .includes(searchQuery.toLowerCase());
+  useEffect(() => {
+    const recipesToFilter = isFavoriteChosen
+      ? recipes.filter((rec) => rec.isFavorite === true)
+      : recipes;
 
-    //     return matchesCategory && matchesSearch;
-    //   })
-    const filteredRecipes = recipes
+    const filteredRecipes = recipesToFilter
       .filter((recipe) => {
         const matchesCategory =
-          selectedCategory === "other" || recipe.category === selectedCategory;
+          selectedCategory === "" || recipe.category === selectedCategory;
         const matchesSearch =
           searchQuery === "" ||
           recipe.mealName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -67,15 +71,11 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
   };
 
   const allRecipesButtonClass = `px-4 w-[120px] z-1 py-2 p-5 ${
-    isFavoriteChosen
-      ? "border-b-2 border-purple-500"
-      : "border-b-2 border-black"
+    isFavoriteChosen ? "" : "border-b-4 border-purple-800"
   }`;
 
   const favoritesButtonClass = `px-4 w-[120px] z-1 py-2 p-5 ${
-    !isFavoriteChosen
-      ? "border-b-2 border-purple-500"
-      : "border-b-2 border-purple-800"
+    !isFavoriteChosen ? "" : "border-b-4 border-purple-800"
   }`;
 
   return (
@@ -116,9 +116,10 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
         </div>
       </div>
 
-      <div className="flex w-[264px] mt-auto space-x-6 border-b-2 border-b-black">
+      <div className="flex w-[264px] mt-auto space-x-6">
         <button
           onClick={() => {
+            localStorage.setItem("cardsStatusFavorite", "all");
             setIsFavoriteChosen(false);
             setFiltered(recipes);
           }}
@@ -128,8 +129,8 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
         </button>
         <button
           onClick={() => {
+            localStorage.setItem("cardsStatusFavorite", "favorite");
             setIsFavoriteChosen(true);
-            console.log(recipes);
             setFiltered(recipes.filter((rec) => rec.isFavorite === true));
           }}
           className={favoritesButtonClass}
@@ -137,12 +138,6 @@ const Header: React.FC<HeaderProps> = ({ setFiltered }) => {
           Favorites
         </button>
       </div>
-      <ul>
-        {recipes.map((rec) => {
-          console.log(rec._id,rec.isFavorite);
-          return <li key={rec._id}>{rec.isFavorite}</li>;
-        })}
-      </ul>
     </div>
   );
 };
