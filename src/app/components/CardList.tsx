@@ -1,6 +1,6 @@
 "use client";
 import Card from "@/app/components/Card";
-import React, { useState , useEffect} from "react";
+import React, { useState } from "react";
 import Recipe from "@/app/types/recipes";
 
 interface CardListProps {
