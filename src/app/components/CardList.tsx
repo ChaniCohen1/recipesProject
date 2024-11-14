@@ -1,6 +1,6 @@
 "use client";
 import Card from "@/app/components/Card";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Recipe from "@/app/types/recipes";
 
 interface CardListProps {
@@ -9,10 +9,18 @@ interface CardListProps {
   setUpdate: (b: boolean) => void;
 }
 
-const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) => {  
+const CardList: React.FC<CardListProps> = ({ filtered, setFiltered, setUpdate }) => {
+
   const [currentPage, setCurrentPage] = useState(1);
   const recipesPerPage = 5;
   const totalPages = Math.ceil(filtered.length / recipesPerPage);
+
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filtered]);
+
+
 
   const onChangeData = (updatedRecipe: Recipe) => {
     setFiltered(
@@ -43,17 +51,17 @@ const CardList: React.FC<CardListProps> = ({ filtered, setFiltered,setUpdate }) 
 
   return (
     <>
-    <div className="flex flex-wrap justify-center gap-4">
-      {currentRecipes.map((recipe, index) => (
-        <Card
-          key={index}
-          recipe={recipe}
-          isSelected={false}
-          onClick={onChangeData}
-          setUpdate={setUpdate}
-        />
-      ))}
-     </div>
+      <div className="flex flex-wrap justify-center gap-4">
+        {currentRecipes.map((recipe, index) => (
+          <Card
+            key={index}
+            recipe={recipe}
+            isSelected={false}
+            onClick={onChangeData}
+            setUpdate={setUpdate}
+          />
+        ))}
+      </div>
       <div className="flex justify-center items-center gap-4 mt-4 mb-6">
         <span className="text-sm text-gray-500">
           Page {currentPage}-{totalPages} of {totalPages}

@@ -1,8 +1,9 @@
 import axios from "axios";
 import Recipe from "../types/recipes";
 
-const url = "https://recipes-project-omega.vercel.app";
-
+const url = "http://localhost:3000";
+// https://recipes-project-omega.vercel.app
+// http://localhost:3000
 export const addRecipe = async (newRecipe: Recipe) => {
     try{
         const response = await axios.post(`${url}/api/recipes`, newRecipe);
