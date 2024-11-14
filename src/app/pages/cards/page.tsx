@@ -7,11 +7,15 @@ import React, { useEffect, useState } from "react";
 
 const Page = () => {
   let status;
+  console.log(typeof window);
+  
   if (typeof window !== "undefined") {
     status = localStorage.getItem("cardsStatusFavorite");
   } else {
     status = false;
   }
+  console.log("status" , status);
+  
   const [filtered, setFiltered] = useState<Recipe[]>([]);
   const [update, setUpdate] = useState(false);
   useEffect(() => {

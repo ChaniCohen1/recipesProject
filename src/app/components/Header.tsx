@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 import Recipe from "@/app/types/recipes";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -19,21 +19,24 @@ interface HeaderProps {
   update: boolean;
   setUpdate: (b: boolean) => void;
 }
-let status;
-if (typeof window !== "undefined") {
-  status = localStorage.getItem("cardsStatusFavorite");
-} else {
-  status = false;
-}
+
 const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
-  const [isFavoriteChosen, setIsFavoriteChosen] = useState(
-    status === "all" ? false : true
-  );
+  const [isFavoriteChosen, setIsFavoriteChosen] = useState<boolean | null>(null); // Set initial state as null
   const router = useRouter();
+
+  // Load favorite status from localStorage, but only on the client side
+  useEffect(() => {
+    const status = localStorage.getItem("cardsStatusFavorite");
+    if (status) {
+      setIsFavoriteChosen(status === "favorite");
+    } else {
+      setIsFavoriteChosen(false); // Default to 'all' recipes if no value is found
+    }
+  }, []); // This useEffect will run only once when the component is mounted on the client side.
 
   useEffect(() => {
     const getAllRecipes = async () => {
@@ -50,23 +53,25 @@ const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
   }, [isFavoriteChosen]);
 
   useEffect(() => {
-    const recipesToFilter = isFavoriteChosen
-      ? recipes.filter((rec) => rec.isFavorite === true)
-      : recipes;
+    if (isFavoriteChosen !== null) { // Only filter if we have a value for isFavoriteChosen
+      const recipesToFilter = isFavoriteChosen
+        ? recipes.filter((rec) => rec.isFavorite === true)
+        : recipes;
 
-    const filteredRecipes = recipesToFilter
-      .filter((recipe) => {
-        const matchesCategory =
-          selectedCategory === "" || recipe.category === selectedCategory;
-        const matchesSearch =
-          searchQuery === "" ||
-          recipe.mealName.toLowerCase().includes(searchQuery.toLowerCase());
+      const filteredRecipes = recipesToFilter
+        .filter((recipe) => {
+          const matchesCategory =
+            selectedCategory === "" || recipe.category === selectedCategory;
+          const matchesSearch =
+            searchQuery === "" ||
+            recipe.mealName.toLowerCase().includes(searchQuery.toLowerCase());
 
-        return matchesCategory && matchesSearch;
-      })
-      .sort((a, b) => a.mealName.localeCompare(b.mealName));
+          return matchesCategory && matchesSearch;
+        })
+        .sort((a, b) => a.mealName.localeCompare(b.mealName));
 
-    setFiltered(filteredRecipes);
+      setFiltered(filteredRecipes);
+    }
   }, [recipes, selectedCategory, searchQuery, setFiltered, isFavoriteChosen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +79,11 @@ const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
   };
 
   const allRecipesButtonClass = `px-4 w-[120px] z-1 py-2 p-5 ${
-    isFavoriteChosen ? "" : "border-b-4 border-purple-800"
+    isFavoriteChosen === false ? "border-b-4 border-purple-800" : ""
   }`;
 
   const favoritesButtonClass = `px-4 w-[120px] z-1 py-2 p-5 ${
-    !isFavoriteChosen ? "" : "border-b-4 border-purple-800"
+    isFavoriteChosen === true ? "border-b-4 border-purple-800" : ""
   }`;
 
   return (
