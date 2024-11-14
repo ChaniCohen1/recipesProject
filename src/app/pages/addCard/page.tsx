@@ -99,20 +99,20 @@ const NewCardForm = () => {
   const buttonStyle = "m-2 py-1 px-3 bg-purple-600 text-white rounded";
 
   return (
-    <div>
-      <button className="m-7 font-medium" onClick={goBack}>
+    <div className="bg-purple-100 h-[100vh]">
+      <button className="mt-7 ml-7 font-medium text-base" onClick={goBack}>
         {"≺ "}Back
       </button>
       <div className="m-10">
-        <h1 className="text-3xl ml-9">Add Recipe</h1>
+        <h1 className="text-3xl m-2">Add Recipe</h1>
         <form onSubmit={handleSubmit} className="flex flex-row gap-8">
-          <div className="w-[100%]">
-            <div className="flex w-[100%] justify-around">
-              <div className="flex flex-col p-5 w-1/3 space-y-4">
+          <div className="w-[100%] right-0">
+            <div className="flex w-[100%] justify-between">
+              <div className="flex flex-col w-1/3 space-y-4">
                 <input
                   type="text"
                   name="meal_name"
-                  placeholder="Meal name"
+                  placeholder=" Meal name"
                   value={mealName}
                   onChange={(e) => setMealName(e.target.value)}
                   className={`${inpStyle} h-10`}
@@ -126,17 +126,17 @@ const NewCardForm = () => {
                   <option value="" disabled>
                     Category
                   </option>
-                  <option value="salads">Salads</option>
-                  <option value="pastries">Pastries</option>
-                  <option value="meats">Meats</option>
-                  <option value="sidedishes">Side dishes</option>
-                  <option value="desserts">Desserts</option>
-                  <option value="other">Other</option>
+                  <option value="salads">salads</option>
+                  <option value="pastries">pastries</option>
+                  <option value="meats">meats</option>
+                  <option value="sidedishes">side dishes</option>
+                  <option value="desserts">desserts</option>
+                  <option value="other">other</option>
                 </select>
                 <input
                   type="text"
                   name="image"
-                  placeholder="image URL"
+                  placeholder=" image URL"
                   onChange={(e) => setImage(e.target.value)}
                   className={`${inpStyle} h-10`}
                 />
@@ -146,7 +146,7 @@ const NewCardForm = () => {
                     <input
                       type="text"
                       name={`ingredient-${index}`}
-                      placeholder="Ingredient"
+                      placeholder=" Ingredient"
                       value={ingredient}
                       onChange={(e) =>
                         handleIngredientChange(index, e.target.value)
@@ -165,10 +165,10 @@ const NewCardForm = () => {
                   </div>
                 ))}
               </div>
-              <div className="flex flex-col p-5 w-1/2 space-y-4">
+              <div className="flex flex-col w-1/2 space-y-4">
                 <textarea
                   name="instructions"
-                  placeholder="Instructions"
+                  placeholder=" Instructions"
                   rows={5}
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
@@ -176,9 +176,11 @@ const NewCardForm = () => {
                 />
               </div>
             </div>
-            <button type="submit" className={`${buttonStyle} w-1/5 absolute right-0 mr-20`}>
-              Add
-            </button>
+            <div className="flex justify-end mt-2">
+              <button type="submit" className={`${buttonStyle} w-[100px]`}>
+                Add
+              </button>
+            </div>
           </div>
         </form>
       </div>

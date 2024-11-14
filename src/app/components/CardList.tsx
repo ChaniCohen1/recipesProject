@@ -12,7 +12,7 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ filtered, setFiltered, setUpdate }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
-  const recipesPerPage = 5;
+  const recipesPerPage = 10;
   const totalPages = Math.ceil(filtered.length / recipesPerPage);
 
 
