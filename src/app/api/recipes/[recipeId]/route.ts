@@ -2,9 +2,7 @@ import connect from "@/app/lib/DB/connectDB";
 import Recipe from "@/app/lib/models/recipe";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { recipeId: string } }
+export async function GET( { params }: { params: { recipeId: string } }
 ) {
   try {
     const { recipeId } = await params;
@@ -30,15 +28,6 @@ export async function PUT(
       isFavorite,
       image,
     } = await request.json();
-    console.log(
-      "in api",
-      mealName,
-      category,
-      PreparationInstructions,
-      ingredients,
-      isFavorite,
-      image
-    );
 
     await connect();
 

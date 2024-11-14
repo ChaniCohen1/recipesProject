@@ -10,16 +10,19 @@ interface CardListProps {
 }
 
 const CardList: React.FC<CardListProps> = ({ filtered, setFiltered, setUpdate }) => {
-
+  
   const [currentPage, setCurrentPage] = useState(1);
   const recipesPerPage = 10;
   const totalPages = Math.ceil(filtered.length / recipesPerPage);
-
-
+  // חישוב המתכונים שצריכים להופיע בעמוד הנוכחי
+  const indexOfLastRecipe = currentPage * recipesPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+  const currentRecipes = filtered.slice(indexOfFirstRecipe, indexOfLastRecipe);
+  
+  
   useEffect(() => {
     setCurrentPage(1);
   }, [filtered]);
-
 
 
   const onChangeData = (updatedRecipe: Recipe) => {
@@ -29,11 +32,6 @@ const CardList: React.FC<CardListProps> = ({ filtered, setFiltered, setUpdate })
       )
     );
   };
-
-  // חישוב המתכונים שצריכים להופיע בעמוד הנוכחי
-  const indexOfLastRecipe = currentPage * recipesPerPage;
-  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-  const currentRecipes = filtered.slice(indexOfFirstRecipe, indexOfLastRecipe);
 
   // פונקציה למעבר לעמוד הבא
   const handleNextPage = () => {

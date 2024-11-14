@@ -21,10 +21,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ setFiltered, update, setUpdate }) => {
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-
   const [isFavoriteChosen, setIsFavoriteChosen] = useState<boolean | null>(null); // Set initial state as null
   const router = useRouter();
 
