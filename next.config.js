@@ -4,7 +4,8 @@ const nextConfig = {
     domains: [
       "cdn.loveandlemons.com",
       "encrypted-tbn0.gstatic.com",
-      "images.unsplash.com"
+      "images.unsplash.com",
+      "cdn.getmood.io"
     ],
   },
 };
