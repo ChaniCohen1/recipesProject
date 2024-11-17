@@ -1,8 +1,12 @@
 import axios from "axios";
 
+const url = "https://recipes-project-omega.vercel.app";
+// https://recipes-project-omega.vercel.app
+// http://localhost:3000
+
 export async function fetchProtectedData() {
   try {
-    const response = await axios.get("http://localhost:3000/api/login", {
+    const response = await axios.get(`${url}/api/login`, {
       withCredentials: true, //אישור שליחת עוגיות לשרת
     });
 
@@ -25,7 +29,7 @@ export async function loginAxiosForGetToken(email: string, password: string) {
     console.log(email, password);
     
     // שליחת הבקשה לשרת עם נתוני הלוגין
-    const response = await axios.post("http://localhost:3000/api/login", {
+    const response = await axios.post(`${url}/api/login`, {
       email,
       password,
     });
